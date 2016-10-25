@@ -1,0 +1,61 @@
+{
+    "Statement": [
+        {
+            "Sid": "ModifyAccessScopedToSourceInstanceARN",
+            "Action": [
+                "ec2:CreateTags",
+                "ec2:DeleteTags",
+                "ec2:RunInstances",
+                "ec2:CancelSpotInstanceRequests",
+                "ec2:RequestSpotInstances",
+                "ec2:StartInstances",
+                "ec2:StopInstances"
+            ],
+            "Condition": {
+                "ArnEquals": {
+                    "ec2:SourceInstanceARN": [
+                        "arn:aws:ec2:eu-west-1:[$account_id]:instance/[$instance_id]",
+                        "arn:aws:ec2:eu-west-1:[$account_id]:instance/[$instance_id]"
+                    ]
+                }
+            },
+            "Effect": "Allow",
+            "Resource": "*"
+        },
+        {
+            "Sid": "terminateSlaves",
+            "Action": [
+                "ec2:TerminateInstances"
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/[$tag_value]": "[$tag_value]"
+                },
+                "ArnEquals": {
+                    "ec2:SourceInstanceARN": [
+                        "arn:aws:ec2:eu-west-1:[$account-id]:instance/[$instance_id]",
+                        "arn:aws:ec2:eu-west-1:[$account-id]:instance/[$instance_id]"
+                    ]
+                }
+            },
+            "Effect": "Allow",
+            "Resource": "*"
+        },
+        {
+            "Sid": "ReadAcccessUnrestricted",
+            "Action": [
+                "ec2:DescribeSpotInstanceRequests",
+                "ec2:GetConsoleOutput",
+                "ec2:DescribeInstances",
+                "ec2:DescribeKeyPairs",
+                "ec2:DescribeRegions",
+                "ec2:DescribeImages",
+                "ec2:DescribeAvailabilityZones",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeSubnets"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        }
+    ]
+}
